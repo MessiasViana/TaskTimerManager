@@ -1,5 +1,5 @@
 <template>
-  <header class="p-10 bg-darkblue flex justify-center w-screen h-full md:h-screen md:w-full">
+  <header class="bg-dark-secundary flex justify-center w-screen h-full md:min-h-screen md:w-full ">
     <h1>
       <img src="../assets/logo.png" alt="" />
     </h1>

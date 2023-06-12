@@ -1,25 +1,11 @@
 <template>
-  <div class="shadow-md shadow-gray-500 rounded-md flex justify-center">
+  <div class=" rounded-md flex justify-center">
     <div class="grid grid-cols-2 grid-rows-4 md:grid-rows-3 w-full">
       <div class="col-span-2 row-start-2 mx-2 md:col-start-1" role="form" aria-label="Formulário para criação de uma nova tarefa">
-        <input type="text" placeholder="Qual tarefa você deseja iniciar?" class="border-2 border-gray-700 rounded-md p-2 w-full"/>
+        <input type="text" placeholder="Qual tarefa você deseja iniciar?" class="border border-black/10  rounded-md p-2 w-full shadow-xl dark:text-white dark:bg-gray-700 dark:border-gray-900/50 focus:outline-none" v-model="description"/>
       </div>
-      <div class="row-start-3 w-screen mt-3 md:w-full md:row-start-2 md:mt-0">
-        <div class="flex items-center justify-center h-full my-auto mr-10">
-          <section class="px-2">
-            <strong>{{ timeElapsed }}</strong>
-          </section>
-          <div>
-            <button class="px-2 border border-1 border-slate-700 rounded-md" @click="play">
-              <IconPlay class="inline-block"/>
-              Play
-            </button>
-            <button class="px-2 ml-2 border border-1 border-slate-700 rounded-md" @click="stop">
-              <IconStop class="inline-block"/>
-              Stop
-            </button>
-          </div>
-        </div>
+      <div class="row-start-3 w-screen mt-3 md:w-full md:col-span-2 md:m-0 lg:row-start-2 lg:col-span-1">
+        <Timer @timerEnd="endTask"/>
       </div>
     </div>
   </div>
@@ -27,34 +13,26 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue'
-  import IconStop from './icons/IconStop.vue'
-  import IconPlay from './icons/IconPlay.vue'
+  import Timer from './Timer.vue'
 
   export default defineComponent({
     name: 'TaskForm',
+    emits: ["whenSavingTask"],
     components: {
-      IconStop,
-      IconPlay
+      Timer
     },
-    data() {
+    data() { 
       return {
-        timeInSeconds: 0,
-        stopwatch: 0
-      }
-    },
-    computed: {
-      timeElapsed(): string { 
-        return new Date(this.timeInSeconds * 1000).toISOString().substr(11, 8)
+        description: ''
       }
     },
     methods: {
-      play() {
-        this.stopwatch = setInterval(() => { 
-          this.timeInSeconds++;
-        }, 1000)
-      },
-      stop() {
-        clearInterval(this.stopwatch);
+      endTask(elapsedTime: number): void { 
+        this.$emit("whenSavingTask", {
+          durationInSeconds: elapsedTime,
+          description: this.description
+        })
+        this.description = ''
       }
     }
   })
