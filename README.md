@@ -1,4 +1,5 @@
 # Lista de Tarefas Vue com Temporizador
+![WhatsApp Image 2023-06-11 at 21 20 40](https://github.com/MessiasViana/TaskTimerManager/assets/87711032/73f479ed-ba2e-4dbc-88de-7b7e2f7adcac)
 
 Este é um aplicativo simples em Vue que implementa uma lista de tarefas com um temporizador para cada tarefa. O aplicativo permite que os usuários criem tarefas, iniciem e parem os temporizadores associados a cada tarefa, marcando as tarefas como concluídas.
 
@@ -39,8 +40,6 @@ Este é um aplicativo simples em Vue que implementa uma lista de tarefas com um 
 ## Tecnologias Utilizadas
 
 - Vue.js - Framework JavaScript para construção de interfaces de usuário
-- Vuex - Padrão de gerenciamento de estado e biblioteca para aplicativos Vue.js
-- Vue Router - Roteador oficial para aplicativos Vue.js
 - TailwindCSS - Framework CSS para desenvolvimento web responsivo e mobile-first
 
 ## Contribuição
