@@ -1,8 +1,11 @@
 <template>
   <Box>
-    <div class="grid grid-cols-3 max-sm:flex max-sm:flex-col">
+    <div class="grid grid-cols-4 max-sm:flex max-sm:flex-col">
       <div class="col-span-2">
         {{ task.description || "Tarefa sem descrição"}}
+      </div>
+      <div class="col-span-1">
+        {{ task.project?.name || "N/D"}}
       </div>
       <div class="col-span-1 dark:text-black">
         <Stopwatch :timeInSeconds="task.durationInSeconds" class="max-sm:p-0"/>

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col items-center justify-center h-full my-auto lg:mr-10 lg:flex-row">
+  <div class="flex flex-col items-center justify-center h-full my-auto lg:flex-row">
     <Stopwatch :timeInSeconds="timeInSeconds" class="dark:text-white" />
 
     <div class="flex flex-wrap justify-center">
@@ -10,7 +10,7 @@
         @click="button.action"
         :disabled="button.disabled(stopwatchRunning)"
       >
-        <component :is="button.icon" class="inline-block" />
+        <component :is="button.icon" class="inline-block"/>
         {{ button.label }}
       </button>
     </div>
@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, markRaw } from 'vue'
 import Stopwatch from './Stopwatch.vue'
 import IconPlay from './icons/IconPlay.vue'
 import IconStop from './icons/IconStop.vue'
@@ -42,19 +42,19 @@ export default defineComponent({
       buttons: [
       {
         label: 'Iniciar',
-        icon: IconPlay,
+        icon: markRaw(IconPlay),
         action: this.play,
         disabled: (stopwatchRunning: boolean): boolean => stopwatchRunning
       },
       {
         label: 'Parar',
-        icon: IconStop,
+        icon: markRaw(IconStop),
         action: this.stop,
         disabled: (stopwatchRunning: boolean): boolean => !stopwatchRunning
       },
       {
         label: 'Concluir',
-        icon: IconComplete,
+        icon: markRaw(IconComplete),
         action: this.complete,
         disabled: (): boolean => false
       }
