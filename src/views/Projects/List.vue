@@ -38,14 +38,14 @@ export default defineComponent({
   name: 'List',
   methods: {
     exclude(id: string) {
-      this.store.commit('DELETE_PROJECT', id)
+      this.store.dispatch('REMOVE_PROJECT', id)
     }
   },
   setup() {
     const store = useStore(key)
     store.dispatch("GET_PROJECTS")
     return {
-      projects: computed(() => store.state.projects),
+      projects: computed(() => store.state.project.projects),
       store
     }
   }

@@ -1,5 +1,5 @@
 <template>
-  <Box>
+  <Box class="cursor-pointer"  @click="taskClick">
     <div class="grid grid-cols-4 max-sm:flex max-sm:flex-col">
       <div class="col-span-2">
         {{ task.description || "Tarefa sem descrição"}}
@@ -22,7 +22,8 @@ import type { PropType } from 'vue';
 import type ITask from '../intarfaces/ITask'
 
 export default defineComponent({
-  name: 'Task',
+  name: 'TaskComponent',
+  emits: ['taskClicked'],
   components: {
     Stopwatch,
     Box
@@ -31,6 +32,11 @@ export default defineComponent({
     task: {
       type: Object as PropType<ITask>,
       required: true
+    }
+  },
+  methods: {
+    taskClick(): void {
+      this.$emit('taskClicked', this.task)
     }
   }
 })

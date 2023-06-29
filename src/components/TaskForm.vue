@@ -26,38 +26,39 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import Timer from './Timer.vue'
 import { useStore } from 'vuex'
 import { key } from "@/store"
 import type IProject from "@/intarfaces/IProject"
 
 export default defineComponent({
-  name: 'TaskForm',
+  name: 'TaskFormComponent',
   emits: ["whenSavingTask"],
   components: {
     Timer
   },
-  data() { 
-    return {
-      description: '',
-      idProject: '',
-    }
-  },
-  methods: {
-    endTask(elapsedTime: number): void { 
-      this.$emit("whenSavingTask", {
-        durationInSeconds: elapsedTime,
-        description: this.description,
-        project: this.projects.find((proj: IProject) => proj.id == this.idProject)
-      })
-      this.description = ''
-    }
-  },
-  setup() {
+  setup(props, { emit }) {
     const store = useStore(key)
+
+    const description = ref("")
+    const idProject = ref("")
+    const projects = computed(() => store.state.project.projects)
+
+    const endTask = (elapsedTime: number): void => { 
+      emit("whenSavingTask", {
+        durationInSeconds: elapsedTime,
+        description: description.value,
+        project: projects.value.find((proj: IProject) => proj.id == idProject.value)
+      })
+      description.value = ''
+    }
+
     return {
-      projects: computed(() => store.state.projects)
+      projects,
+      description,
+      idProject,
+      endTask
     }
   }
 })

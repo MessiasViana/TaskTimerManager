@@ -8,7 +8,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'Stopwatch',
+  name: 'StopwatchComponent',
   props: {
     timeInSeconds: {
       type: Number,

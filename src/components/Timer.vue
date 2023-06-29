@@ -25,7 +25,7 @@ import IconStop from './icons/IconStop.vue'
 import IconComplete from './icons/IconComplete.vue'
 
 export default defineComponent({
-  name: 'Timer',
+  name: 'TimerComponent',
   emits: ['timerEnd'],
   components: {
     Stopwatch,

@@ -1,40 +1,32 @@
 import type { INotification } from "@/intarfaces/INotification";
-import type IProject from "@/intarfaces/IProject";
 import type { InjectionKey,  } from "vue";
 import { createStore, Store } from "vuex";
-import http from "@/http"
-import type { Commit } from "vuex/types/index.js";
+import { type StateProject, project } from "./modules/project";
+import { type StateTask, task } from "./modules/task";
+import type IProject from "@/intarfaces/IProject";
+import type ITask from "@/intarfaces/ITask";
 
-interface State {
-  projects: IProject[];
+export interface State {
+  project: StateProject;
   notifications: INotification[];
+  task: StateTask;
+  projects: IProject[];
+  tasks: ITask[];
 }
 
 export const key: InjectionKey<Store<State>> = Symbol()
 
 export const store = createStore<State>({
   state: {
-    projects: [],
-    notifications: [],
+    project: {
+      projects: [],
+    },
+    task: {
+      tasks: [],
+    },
+    notifications: []
   },
   mutations: {
-    'ADD_PROJECT'(state: State, nameProject: string) {
-      const project = {
-        id: new Date().toISOString(),
-        name: nameProject
-      } as IProject
-      state.projects.push(project)
-    },
-    'EDIT_PROJECT'(state: State, project: IProject) {
-      const index = state.projects.findIndex((proj: IProject) => proj.id === project.id)
-      state.projects[index] = project
-    },
-    'DELETE_PROJECT'(state: State, id: string) {
-      state.projects = state.projects.filter((proj: IProject) => proj.id != id)
-    },
-    'DEFINE_PROJECTS'(state: State, projects: IProject[]) {
-      state.projects = projects
-    },
     'NOTIFY'(state: State, newNotification: INotification) {
       newNotification.id = new Date().getTime()
       state.notifications.push(newNotification)
@@ -44,9 +36,8 @@ export const store = createStore<State>({
       }, 3000)
     }
   },
-  actions: {
-    'GET_PROJECTS'({ commit }: { commit: Commit }) {
-      http.get('projects').then((response) => commit('DEFINE_PROJECTS', response.data))
-    }
+  modules: {
+    project,
+    task
   }
 })

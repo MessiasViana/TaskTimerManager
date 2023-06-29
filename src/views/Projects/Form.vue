@@ -1,7 +1,7 @@
 <template>
   <section>
     <form @submit.prevent="save" class="">
-      <div class="">
+      <div>
         <label for="nameProject" class="mx-2 block">Nome do projeto</label>
         <input 
         type="text" 
@@ -19,12 +19,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { useStore } from 'vuex'
 import { key } from '@/store'
 import { TypeNotification} from '@/intarfaces/INotification'
 import useNotifier from '@/hooks/notifier'
 import type IProject from '@/intarfaces/IProject'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'Form',
@@ -33,46 +34,50 @@ export default defineComponent({
       type: String
     }
   },
-  mounted() {
-    if (this.id) {
-      const project = this.store.state.projects.find((p: IProject) => p.id == this.id)
-      this.nameProject = project?.name || ''
-    }
-  },
-  data() {
-    return {
-      nameProject: ''
-    }
-  },
   methods: {
-    save() {
-      this.nameProject = this.nameProject.trim()
+    
+  },
+  setup(props) {
+    const router = useRouter()
 
-      if (this.id) {
-        this.store.commit("EDIT_PROJECT", {
-          id: this.id,
-          name: this.nameProject
+    const store = useStore(key)
+    const { notify } = useNotifier()
+
+    const nameProject = ref("")
+
+    if(props.id) {
+      const project = store.state.project.projects.find((p: IProject) => p.id == props.id)
+      nameProject.value = project?.name || ''
+    }
+
+    const handleSuccessfully = () => {
+      nameProject.value = ''
+      notify(TypeNotification.SUCCESS, 'Excelente', 'Ação realizada com sucesso!!')
+      router.push('/projetos')
+    }
+
+    const save = () => {
+      nameProject.value = nameProject.value.trim()
+
+      if (props.id) {
+        store.dispatch("CHANGE_PROJECT", {
+          id: props.id,
+          name: nameProject.value
         })
-        this.notify(TypeNotification.SUCCESS, 'Boaaa', 'Projeto editado com sucesso')
-        this.$router.push('/projetos')
+        .then(() => handleSuccessfully())
       } else {
-        if (this.nameProject.length > 0) {
-          this.store.commit("ADD_PROJECT", this.nameProject)
-          this.nameProject = ''
-          this.notify(TypeNotification.SUCCESS, 'Excelente', 'Projeto adicionado com sucesso')
-          this.$router.push('/projetos')
+        if (nameProject.value.length > 0) {
+          store.dispatch("REGISTER_PROJECT", nameProject.value)
+          .then(() => handleSuccessfully())
         } else {
-          this.notify(TypeNotification.FAIL, 'Erro', 'Coloque um nome')
+          notify(TypeNotification.FAIL, 'Erro', 'Coloque um nome')
         }
       }
     }
-  },
-  setup() {
-    const store = useStore(key)
-    const { notify } = useNotifier()
+
     return {
-      store,
-      notify
+      nameProject,
+      save
     }
   }
 })

@@ -1,8 +1,4 @@
 {
-  "projects": [
-    {
-      "id": 1,
-      "name": "Tracker"
-    }
-  ]
+  "projects": [],
+  "tasks": []
 }
